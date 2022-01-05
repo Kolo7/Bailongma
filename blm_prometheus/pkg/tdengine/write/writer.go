@@ -143,6 +143,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 	sTableName := tableNameEscape(metricsName)
 	var ok bool
 	schema, ok := IsSTableCreated.Load(sTableName)
+	log.InfoLogger.Printf("stable: %s", sTableName)
 	if !ok { // no local record of super table structure
 		nt.tagList = tbTagList
 		nt.tagMap = tbTagMap
@@ -206,6 +207,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 				}
 
 				sqlcmd = sqlcmd + ")\n"
+				log.InfoLogger.Printf("create stable sqlcmd: %s", sqlcmd)
 				_, err := execSql(sqlcmd, db)
 				if err == nil {
 					IsSTableCreated.Store(sTableName, nt)
@@ -316,7 +318,11 @@ func queryTableStruct(tbname string) string {
 	client := new(http.Client)
 	s := fmt.Sprintf("describe %s.%s", DbName, tbname)
 	body := strings.NewReader(s)
-	req, _ := http.NewRequest("POST", "http://"+TdUrl+":"+ApiPort+"/rest/sql", body)
+	req, err := http.NewRequest("POST", "http://"+TdUrl+":"+ApiPort+"/rest/sql", body)
+	if err != nil {
+		log.ErrorLogger.Println(err)
+		return ""
+	}
 	//fmt.Println("http://" + tdurl + ":" + apiPort + "/rest/sql" + s)
 	req.SetBasicAuth(DbUser, DbPassword)
 	resp, err := client.Do(req)
