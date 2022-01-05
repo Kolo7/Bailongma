@@ -316,7 +316,7 @@ func queryTableStruct(tbname string) string {
 	client := new(http.Client)
 	s := fmt.Sprintf("describe %s.%s", DbName, tbname)
 	body := strings.NewReader(s)
-	req, _ := http.NewRequest("GET", "http://"+TdUrl+":"+ApiPort+"/rest/sql", body)
+	req, _ := http.NewRequest("POST", "http://"+TdUrl+":"+ApiPort+"/rest/sql", body)
 	//fmt.Println("http://" + tdurl + ":" + apiPort + "/rest/sql" + s)
 	req.SetBasicAuth(DbUser, DbPassword)
 	resp, err := client.Do(req)
