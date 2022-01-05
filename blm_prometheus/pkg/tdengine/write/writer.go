@@ -143,7 +143,6 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 	sTableName := tableNameEscape(metricsName)
 	var ok bool
 	schema, ok := IsSTableCreated.Load(sTableName)
-	log.InfoLogger.Printf("stable: %s", sTableName)
 	if !ok { // no local record of super table structure
 		nt.tagList = tbTagList
 		nt.tagMap = tbTagMap
@@ -207,7 +206,6 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 				}
 
 				sqlcmd = sqlcmd + ")\n"
-				log.InfoLogger.Printf("create stable sqlcmd: %s", sqlcmd)
 				_, err = execSql(sqlcmd, db)
 				if err == nil {
 					IsSTableCreated.Store(sTableName, nt)
