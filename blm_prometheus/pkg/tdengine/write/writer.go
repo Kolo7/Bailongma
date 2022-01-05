@@ -187,6 +187,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 									//OrderInsertS(k, tbTagList)
 									tbTagMap[k] = "y"
 								} else {
+									IsSTableCreated.Delete(sTableName)
 									log.ErrorLogger.Println(err)
 								}
 							} else {
@@ -236,6 +237,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 					if err != nil {
 						log.ErrorLogger.Println(err)
 						errorCode := fmt.Sprintf("%s", err)
+						IsSTableCreated.Delete(sTableName)
 						if strings.Contains(errorCode, "duplicated column names") {
 							tbTagList.PushBack(k)
 							//OrderInsertS(k, tbTagList)
