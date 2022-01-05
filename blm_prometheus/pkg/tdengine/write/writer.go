@@ -180,7 +180,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 						_, ok := tbTagMap[k]
 						if !ok {
 							sqlcmd = "alter table " + sTableName + " add tag t_" + k + TagStr + "\n"
-							_, err := execSql(sqlcmd, db)
+							_, err = execSql(sqlcmd, db)
 							if err != nil {
 								errorCode := fmt.Sprintf("%s", err)
 								if strings.Contains(errorCode, "duplicated column names") {
