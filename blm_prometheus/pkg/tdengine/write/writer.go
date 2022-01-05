@@ -208,7 +208,7 @@ func HandleStable(ts *prompb.TimeSeries, db *sql.DB) error {
 
 				sqlcmd = sqlcmd + ")\n"
 				log.InfoLogger.Printf("create stable sqlcmd: %s", sqlcmd)
-				_, err := execSql(sqlcmd, db)
+				_, err = execSql(sqlcmd, db)
 				if err == nil {
 					IsSTableCreated.Store(sTableName, nt)
 				} else {
