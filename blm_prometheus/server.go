@@ -41,6 +41,7 @@ import (
 	"github.com/prometheus/prometheus/prompb"
 	logger "github.com/taosdata/Bailongma/blm_prometheus/pkg/log"
 	_ "github.com/taosdata/driver-go/taosSql"
+	_ "net/http/pprof"
 )
 
 type fieldDescription struct {
